@@ -1,0 +1,5 @@
+package com.eleven.chimps.teste.services.exceptions;
+
+public class ObjectNotFoundException {
+
+}

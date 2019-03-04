@@ -1,0 +1,14 @@
+package com.eleven.chimps.teste.resources.exceptions;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import com.eleven.chimps.teste.services.exceptions.ObjectNotFoundException;
+
+public class ResourceExceptionsHandler {
+	public ResponseEntity<StandardError> objectNotFound(ObjectNotFoundException e, HttpServletRequest request){
+		StandardError err= new StandardError(HttpStatus.NOT_FOUND.value(), e.getMessage(), System.currentTimeMillis());
+	}
+}

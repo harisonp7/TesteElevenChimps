@@ -1,0 +1,58 @@
+package com.eleven.chimps.teste.dto;
+
+import java.io.Serializable;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
+import com.eleven.chimps.teste.domain.Promocao;
+
+public class PromocaoDTO  implements Serializable {
+
+	private static final long serialVersionUID = 1L; 
+	
+	private Integer id;
+	
+	@NotEmpty(message="Preenchimento obrigatório")
+	@Length(min=5, max=80, message="Inserir o nome com o tamanho de 5 e 80 caracteres")
+	private String nome;
+	
+	@Max(100)
+	@Min(1)
+	private Integer percentual;
+	
+	public PromocaoDTO() {}
+	
+	public PromocaoDTO(Promocao obj) {
+		this.id = obj.getId();
+		this.nome = obj.getNome();
+		this.percentual = obj.getPercentual();
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public Integer getPercentual() {
+		return percentual;
+	}
+
+	public void setPercentual(Integer percentual) {
+		this.percentual = percentual;
+	}
+
+}

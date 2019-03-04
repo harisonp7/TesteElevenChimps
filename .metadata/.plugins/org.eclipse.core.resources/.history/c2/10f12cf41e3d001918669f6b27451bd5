@@ -1,0 +1,54 @@
+package com.eleven.chimps.teste;
+
+import java.util.Arrays;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import com.eleven.chimps.teste.domain.Produto;
+import com.eleven.chimps.teste.domain.Promocao;
+import com.eleven.chimps.teste.domain.SkuPromocao;
+import com.eleven.chimps.teste.repositories.ProdutoRepository;
+import com.eleven.chimps.teste.repositories.PromocaoRepository;
+import com.eleven.chimps.teste.repositories.SkuPromocaoRepository;
+
+@SpringBootApplication
+public class ElevenApplication implements CommandLineRunner{
+	
+	@Autowired
+	private ProdutoRepository produtoRepository;
+	
+	@Autowired
+	private PromocaoRepository promocaoRepository;
+	
+	@Autowired
+	private SkuPromocaoRepository skuPromocaoRepository;
+
+	public static void main(String[] args) {
+		SpringApplication.run(ElevenApplication.class, args);
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+				
+		Produto ObjProd = new Produto(null,"Camisa","CAMLEVVP","Levis","Vermelha","G",Double.parseDouble("200"));
+		Produto ObjProd1 = new Produto(null,"Camisa","CAMLEVVP","Levis","Vermelha","GG",Double.parseDouble("350"));
+		
+		produtoRepository.saveAll(Arrays.asList(ObjProd, ObjProd1));
+		
+		SkuPromocao ObjSkuProm = new SkuPromocao(null,"CAMLEVVERP");
+		SkuPromocao ObjSkuProm1 = new SkuPromocao(null,"CAMLEVVERM");
+		SkuPromocao ObjSkuProm2 = new SkuPromocao(null,"CAMLEVVERG");
+		
+		skuPromocaoRepository.saveAll(Arrays.asList(ObjProm, ObjProm1, ObjProm2));
+		
+		Promocao ObjProm = new Promocao(null,"Promoção de Carnaval",30);
+		Promocao ObjProm1 = new Promocao(null,"Promocao de Natal",40);
+		Promocao ObjProm2 = new Promocao(null,"Promocao de Dias das Crianças",70);
+		
+		promocaoRepository.saveAll(Arrays.asList(ObjProm, ObjProm1, ObjProm2));
+	}
+
+}

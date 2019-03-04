@@ -1,0 +1,5 @@
+package com.eleven.chimps.teste.domain;
+
+public class Produto {
+
+}

@@ -1,0 +1,43 @@
+package com.eleven.chimps.teste.resources;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.eleven.chimps.teste.domain.Produto;
+
+@RestController
+@RequestMapping(value="/produtos")
+public class ProdutoResources {
+
+	@RequestMapping(value="/{id}",method=RequestMethod.GET)
+	public List<Produto> find() {
+		Produto prod = new Produto();
+		prod.setId(1);
+		prod.setNome("Camisa");
+		prod.setSku("CAMLEVVP");
+		prod.setMarca("Levis");
+		prod.setCor("Vermelha");
+		prod.setTamanho("P");
+		prod.setPreco(150.00);
+		
+		Produto prod2 = new Produto();
+		prod2.setId(1);
+		prod2.setNome("Camisa");
+		prod2.setSku("CAMLEVVP");
+		prod2.setMarca("Levis");
+		prod2.setCor("Vermelha");
+		prod2.setTamanho("P");
+		prod2.setPreco(150.00);
+		
+		List <Produto> lista = new ArrayList<>();
+		lista.add(prod);
+		lista.add(prod2);
+		
+	
+		return lista;
+	}
+}
