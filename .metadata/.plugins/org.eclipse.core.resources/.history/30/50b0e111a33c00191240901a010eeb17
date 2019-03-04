@@ -1,0 +1,24 @@
+package com.eleven.chimps.teste;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import com.eleven.chimps.teste.domain.Produto;
+
+@SpringBootApplication
+public class ElevenApplication implements CommandLineRunner{
+
+	public static void main(String[] args) {
+		SpringApplication.run(ElevenApplication.class, args);
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+				
+		Produto prod = new Produto(null,"Camisa","CAMLEVVP","Levis","Vermelha","G",Double.parseDouble("200"));
+		Produto prod2 = new Produto(null,"Camisa","CAMLEVVP","Levis","Vermelha","GG",Double.parseDouble("350"));
+		
+	}
+
+}

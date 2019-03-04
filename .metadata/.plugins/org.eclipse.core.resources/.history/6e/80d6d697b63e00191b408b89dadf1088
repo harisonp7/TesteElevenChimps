@@ -1,0 +1,76 @@
+package com.eleven.chimps.teste.services;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.stereotype.Service;
+
+import com.eleven.chimps.teste.domain.Promocao;
+import com.eleven.chimps.teste.dto.PromocaoDTO;
+import com.eleven.chimps.teste.repositories.PromocaoRepository;
+import com.eleven.chimps.teste.services.exceptions.DataIntegrityException;
+import com.eleven.chimps.teste.services.exceptions.ObjectNotFoundException;
+
+@Service
+public class PromocaoService {
+	
+	@Autowired
+	private PromocaoRepository repo;
+	
+	public Promocao find(Integer id) {
+		Optional<Promocao> obj = repo.findById(id);
+		
+		return obj.orElseThrow(() -> new ObjectNotFoundException(
+				String.format("Promoção não encontrada! Id: %1$s Tipo: %2$s", id, Promocao.class.getName())
+			));
+	}
+	
+	public List<Promocao> findAll() {
+		return repo.findAll();
+	}
+	
+	public List<Promocao> findAll2() {
+		return repo.findAll();
+	}
+	
+	public Page<Promocao> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
+		
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction),orderBy);
+		return repo.findAll(pageRequest);
+
+	}
+
+	public Promocao insert(Promocao obj) {
+		obj.setId(null);
+		return repo.save(obj);
+	}
+	
+	public Promocao update(Promocao obj) {
+		Promocao newObj = this.find(obj.getId());
+		updateData(newObj, obj);
+		return repo.save(newObj);
+	}
+	
+	public void delete(Integer id) {
+		this.find(id);
+		try {
+			repo.deleteById(id);
+		}
+		catch(DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Não é possível excluir promoções com vínculos com SKUs, somente atualizar!");
+		}
+	}
+	public Promocao fromDTO(PromocaoDTO objDto)
+	{
+		return new Promocao(objDto.getId(), objDto.getNome(), objDto.getPercentual());
+	}
+	private void updateData(Promocao newObj, Promocao obj) {
+		newObj.setNome(obj.getNome());
+		newObj.setPercentual(obj.getPercentual());
+	}
+}

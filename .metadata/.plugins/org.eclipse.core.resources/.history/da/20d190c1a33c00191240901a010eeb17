@@ -1,0 +1,33 @@
+package com.eleven.chimps.teste;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import com.eleven.chimps.teste.domain.Produto;
+import com.eleven.chimps.teste.repositories.ProdutoRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@SpringBootApplication
+public class ElevenApplication implements CommandLineRunner{
+	
+	@Autowired
+	private ProdutoRepository produtoRepository;
+
+	public static void main(String[] args) {
+		SpringApplication.run(ElevenApplication.class, args);
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+				
+		Produto ObjProd = new Produto(null,"Camisa","CAMLEVVP","Levis","Vermelha","G",Double.parseDouble("200"));
+		Produto ObjProd1 = new Produto(null,"Camisa","CAMLEVVP","Levis","Vermelha","GG",Double.parseDouble("350"));
+		
+		produtoRepository.saveAll(Arrays.asList(ObjProd, ObjProd1));
+	}
+
+}

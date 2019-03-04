@@ -1,0 +1,5 @@
+package com.eleven.chimps.teste.dto;
+
+public class PromocoesDTO {
+
+}

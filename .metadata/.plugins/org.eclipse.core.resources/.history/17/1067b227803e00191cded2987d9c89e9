@@ -1,0 +1,47 @@
+package com.eleven.chimps.teste.dto;
+
+import java.io.Serializable;
+
+import com.eleven.chimps.teste.domain.Promocao;
+
+public class PromocaoDTO  implements Serializable {
+
+	private static final long serialVersionUID = 1L; 
+	
+	private Integer id;
+	private String nome;
+	private Integer percentual;
+	
+	public PromocaoDTO() {}
+	
+	public PromocaoDTO(Promocao obj) {
+		this.id = obj.getId();
+		this.nome = obj.getNome();
+		this.percentual = obj.getPercentual();
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public Integer getPercentual() {
+		return percentual;
+	}
+
+	public void setPercentual(Integer percentual) {
+		this.percentual = percentual;
+	}
+
+}

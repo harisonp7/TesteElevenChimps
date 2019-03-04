@@ -1,0 +1,17 @@
+package com.eleven.chimps.teste;
+
+import com.eleven.chimps.teste.repositories.ProdutoRepository;
+import com.eleven.chimps.teste.repositories.PromocaoRepository;
+import com.eleven.chimps.teste.repositories.SkuPromocaoRepository;
+
+public class ElevenApplicationData {
+	@Autowired
+	public ProdutoRepository produtoRepository;
+	@Autowired
+	public PromocaoRepository promocaoRepository;
+	@Autowired
+	public SkuPromocaoRepository skuPromocaoRepository;
+
+	public ElevenApplicationData() {
+	}
+}
