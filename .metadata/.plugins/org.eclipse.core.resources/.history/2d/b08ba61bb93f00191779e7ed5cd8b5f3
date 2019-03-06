@@ -3,38 +3,41 @@ package com.eleven.chimps.teste.domain;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Promocao  implements Serializable {
+public class EmailPromocao  implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
-	private String nome;
-	private Integer percentual;
+	private String eMail;
 	
 	@JsonIgnore
-	@ManyToMany(mappedBy = "promocoes")
-	private List<SkuPromocao> skuPromocoes = new ArrayList<>();
+	@ManyToMany
+	@JoinTable(name = "SKUPROMOCAO_PROMOCAO",
+		joinColumns = @JoinColumn(name = "skuPromocao_id"),
+		inverseJoinColumns = @JoinColumn(name="promocao_id")
+	)
+	private List<Promocao> promocoes = new ArrayList<>();
 	
-	@ManyToMany(mappedBy = "promocoes")
-	private List<EmailPromocao> emailPromocoes = new ArrayList<>();
-	
-	public Promocao(Integer id, String nome, Integer percentual) {
+	public EmailPromocao(Integer id, String sku) {
 		super();
 		this.id = id;
-		this.nome = nome;
-		this.percentual = percentual;
+		this.eMail = sku;	
 	}
 
-	public Promocao() {	
+	public EmailPromocao() {	
 	}
 
 	public Integer getId() {
@@ -45,38 +48,22 @@ public class Promocao  implements Serializable {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getSku() {
+		return eMail;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setSku(String sku) {
+		this.eMail = sku;
 	}
 
-	public List<SkuPromocao> getSkuPromocoes() {
-		return skuPromocoes;
+	public List<Promocao> getPromocoes() {
+		return promocoes;
 	}
 
-	public void setSkuPromocoes(List<SkuPromocao> skuPromocoes) {
-		this.skuPromocoes = skuPromocoes;
+	public void setPromocoes(List<Promocao> promocoes) {
+		this.promocoes = promocoes;
 	}
 	
-	public List<EmailPromocao> getEmailPromocoes() {
-		return emailPromocoes;
-	}
-
-	public void setEmailPromocoes(List<EmailPromocao> emailPromocoes) {
-		this.emailPromocoes = emailPromocoes;
-	}
-	
-	public Integer getPercentual() {
-		return percentual;
-	}
-
-	public void setPercentual(Integer percentual) {
-		this.percentual = percentual;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -93,7 +80,7 @@ public class Promocao  implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Promocao other = (Promocao) obj;
+		EmailPromocao other = (EmailPromocao) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

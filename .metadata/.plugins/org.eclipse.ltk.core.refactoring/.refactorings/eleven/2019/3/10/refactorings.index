@@ -13,3 +13,8 @@
 1551836304382	Extract method 'InsertSku'
 1551837579572	Extract Class...
 1551837645558	Delete element
+1551839817891	Copy compilation unit
+1551839896829	Rename field 'sku'
+1551839949278	Rename field 'eMail'
+1551840282364	Copy compilation unit
+1551840364880	Copy compilation unit

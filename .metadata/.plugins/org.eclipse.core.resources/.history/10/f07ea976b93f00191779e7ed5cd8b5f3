@@ -24,9 +24,6 @@ public class Promocao  implements Serializable {
 	@ManyToMany(mappedBy = "promocoes")
 	private List<SkuPromocao> skuPromocoes = new ArrayList<>();
 	
-	@ManyToMany(mappedBy = "promocoes")
-	private List<EmailPromocao> emailPromocoes = new ArrayList<>();
-	
 	public Promocao(Integer id, String nome, Integer percentual) {
 		super();
 		this.id = id;
@@ -59,14 +56,6 @@ public class Promocao  implements Serializable {
 
 	public void setSkuPromocoes(List<SkuPromocao> skuPromocoes) {
 		this.skuPromocoes = skuPromocoes;
-	}
-	
-	public List<EmailPromocao> getEmailPromocoes() {
-		return emailPromocoes;
-	}
-
-	public void setEmailPromocoes(List<EmailPromocao> emailPromocoes) {
-		this.emailPromocoes = emailPromocoes;
 	}
 	
 	public Integer getPercentual() {

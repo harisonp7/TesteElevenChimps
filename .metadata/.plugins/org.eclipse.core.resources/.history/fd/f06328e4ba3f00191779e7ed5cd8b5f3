@@ -31,9 +31,6 @@ public class PromocaoService {
 	@Autowired
 	private SkuPromocaoService serviceSku;
 	
-	@Autowired
-	private EmailPromocaoService serviceEmail;
-	
 	public Promocao find(Integer id) {
 		Optional<Promocao> obj = repo.findById(id);
 		
@@ -73,7 +70,8 @@ public class PromocaoService {
 		}
 		repo.saveAll(Arrays.asList(objProm));
 		serviceSku.InsertSku(listSkuPromocao, objProm);
-		serviceEmail.InsertEmail(listEmailPromocao, objProm);
+		serviceEmail.InsertEmail(listSkuPromocao, objProm);
+		
 	}	
 	
 	public Promocao update(Promocao obj) {

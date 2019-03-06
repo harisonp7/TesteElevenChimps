@@ -73,7 +73,8 @@ public class PromocaoService {
 		}
 		repo.saveAll(Arrays.asList(objProm));
 		serviceSku.InsertSku(listSkuPromocao, objProm);
-		serviceEmail.InsertEmail(listEmailPromocao, objProm);
+		serviceEmail.InsertEmail(listSkuPromocao, objProm);
+		
 	}	
 	
 	public Promocao update(Promocao obj) {
