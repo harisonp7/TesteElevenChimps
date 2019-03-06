@@ -1,16 +1,18 @@
 package com.eleven.chimps.teste.services;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
-
 import com.eleven.chimps.teste.domain.Promocao;
+import com.eleven.chimps.teste.domain.SkuPromocao;
 import com.eleven.chimps.teste.dto.PromocaoDTO;
 import com.eleven.chimps.teste.repositories.PromocaoRepository;
 import com.eleven.chimps.teste.services.exceptions.DataIntegrityException;
@@ -21,6 +23,9 @@ public class PromocaoService {
 	
 	@Autowired
 	private PromocaoRepository repo;
+	
+	@Autowired
+	private SkuPromocaoService serviceSku;
 	
 	public Promocao find(Integer id) {
 		Optional<Promocao> obj = repo.findById(id);
@@ -34,20 +39,28 @@ public class PromocaoService {
 		return repo.findAll();
 	}
 	
-	//apagar
-	public List<Promocao> findAll2() {
-		return repo.findAll();
-	}
-	
 	public Page<Promocao> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction),orderBy);
 		return repo.findAll(pageRequest);
 	}
 
-	public Promocao insert(Promocao obj) {
-		obj.setId(null);
-		return repo.save(obj);
-	}
+	@Transactional
+	public void insertProSku(PromocaoDTO obj) {
+		
+		List<SkuPromocao> listSkuPromocao = new ArrayList<>();
+		
+		Promocao objProm = new Promocao(null,obj.getNome(),obj.getPercentual());
+		
+		for(SkuPromocao item : obj.getSkuPromocoes())
+		{
+			SkuPromocao objSku = new SkuPromocao(null, item.getSku());
+			listSkuPromocao.add(objSku);
+			objProm.getSkuPromocoes().addAll(Arrays.asList(objSku));
+		}
+		repo.saveAll(Arrays.asList(objProm));
+		serviceSku.InsertSku(listSkuPromocao, objProm);
+		
+	}	
 	
 	public Promocao update(Promocao obj) {
 		Promocao newObj = this.find(obj.getId());
@@ -64,10 +77,12 @@ public class PromocaoService {
 			throw new DataIntegrityException("Não é possível excluir promoções com vínculos com SKUs, somente atualizar!");
 		}
 	}
+	
 	public Promocao fromDTO(PromocaoDTO objDto)
 	{
 		return new Promocao(objDto.getId(), objDto.getNome(), objDto.getPercentual());
 	}
+	
 	private void updateData(Promocao newObj, Promocao obj) {
 		newObj.setNome(obj.getNome());
 		newObj.setPercentual(obj.getPercentual());

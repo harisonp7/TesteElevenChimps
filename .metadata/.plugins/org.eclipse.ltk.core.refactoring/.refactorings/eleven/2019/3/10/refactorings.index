@@ -5,3 +5,11 @@
 1551716094463	Delete element
 1551728632402	Rename field 'SkuPromocoes'
 1551732357965	Copy compilation unit
+1551836172161	Rename field 'promocaoRepository'
+1551836190291	Rename field 'skuPromocaoRepository'
+1551836215237	Rename field 'promRepository'
+1551836223317	Rename field 'promRep'
+1551836231169	Rename field 'skuPromRepository'
+1551836304382	Extract method 'InsertSku'
+1551837579572	Extract Class...
+1551837645558	Delete element

@@ -39,34 +39,37 @@ public class ElevenApplication implements CommandLineRunner{
 		
 		produtoRepository.saveAll(Arrays.asList(ObjProd, ObjProd1));
 		
-		SkuPromocao objSkuProm = new SkuPromocao(null,"CAMLEVVERP");
-		SkuPromocao objSkuProm1 = new SkuPromocao(null,"CAMLEVVERM");
-		SkuPromocao objSkuProm2 = new SkuPromocao(null,"CAMLEVVERG");
-		
-		SkuPromocao objSkuProm3 = new SkuPromocao(null,"CAMLEVPREP");
-		SkuPromocao objSkuProm4 = new SkuPromocao(null,"CAMLEVPREM");
-		SkuPromocao objSkuProm5 = new SkuPromocao(null,"CAMLEVPREG");
+		SkuPromocao objSku = new SkuPromocao(null,"CAMLEVVERP");
+		SkuPromocao objSku1 = new SkuPromocao(null,"CAMLEVAMAG");
+//		SkuPromocao objSku2 = new SkuPromocao(null,"CAMLEVVERG");
+//		
+//		SkuPromocao objSku3 = new SkuPromocao(null,"CAMLEVPREP");
+//		SkuPromocao objSku4 = new SkuPromocao(null,"CAMLEVPREM");
+//		SkuPromocao objSku5 = new SkuPromocao(null,"CAMLEVPREG");
 		
 		Promocao objProm = new Promocao(null,"Promoção de Carnaval",30);
-		Promocao objProm1 = new Promocao(null,"Promocao de Natal",40);
-		Promocao objProm2 = new Promocao(null,"Promocao de Dias das Crianças",70);
+//		Promocao objProm1 = new Promocao(null,"Promocao de Natal",40);
+//		Promocao objProm2 = new Promocao(null,"Promocao de Dias das Crianças",70);
 		
 		
-		objProm.getSkuPromocoes().addAll(Arrays.asList(objSkuProm, objSkuProm1));
-		objProm1.getSkuPromocoes().addAll(Arrays.asList(objSkuProm, objSkuProm5));
-		objProm2.getSkuPromocoes().addAll(Arrays.asList(objSkuProm2, objSkuProm3, objSkuProm4));
+		objProm.getSkuPromocoes().addAll(Arrays.asList(objSku, objSku1));
+//		objProm1.getSkuPromocoes().addAll(Arrays.asList(objSku, objSku5));
+//		objProm2.getSkuPromocoes().addAll(Arrays.asList(objSku2, objSku3, objSku4));
 		
-		objSkuProm.getPromocoes().addAll(Arrays.asList(objProm, objProm1));
-		objSkuProm1.getPromocoes().addAll(Arrays.asList(objProm));
-		objSkuProm2.getPromocoes().addAll(Arrays.asList(objProm2));
-		objSkuProm3.getPromocoes().addAll(Arrays.asList(objProm2));
-		objSkuProm4.getPromocoes().addAll(Arrays.asList(objProm2));
-		objSkuProm5.getPromocoes().addAll(Arrays.asList(objProm2));
+		objSku.getPromocoes().addAll(Arrays.asList(objProm));
+		objSku1.getPromocoes().addAll(Arrays.asList(objProm));
+		//objSku.getPromocoes().addAll(Arrays.asList(objProm, objProm1));
+//		objSku2.getPromocoes().addAll(Arrays.asList(objProm2));
+//		objSku3.getPromocoes().addAll(Arrays.asList(objProm2));
+//		objSku4.getPromocoes().addAll(Arrays.asList(objProm2));
+//		objSku5.getPromocoes().addAll(Arrays.asList(objProm2));
 
 		
-		promocaoRepository.saveAll(Arrays.asList(objProm, objProm1, objProm2));
+		//promocaoRepository.saveAll(Arrays.asList(objProm, objProm1, objProm2));
+		promocaoRepository.saveAll(Arrays.asList(objProm));
 		
-		skuPromocaoRepository.saveAll(Arrays.asList(objSkuProm, objSkuProm1, objSkuProm2,objSkuProm3, objSkuProm4, objSkuProm5));
+		//skuPromocaoRepository.saveAll(Arrays.asList(objSku, objSku1, objSku2,objSku3, objSku4, objSku5));
+		skuPromocaoRepository.saveAll(Arrays.asList(objSku, objSku1));
 		
 	}
 
