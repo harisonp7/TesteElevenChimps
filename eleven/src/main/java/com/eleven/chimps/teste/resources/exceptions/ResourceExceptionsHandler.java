@@ -15,7 +15,8 @@ import com.eleven.chimps.teste.services.exceptions.ObjectNotFoundException;
 @ControllerAdvice
 public class ResourceExceptionsHandler {
 	/*
-	 * Tratamento das mensagens de erro
+	 * Objetivo : Tratamento das mensagens de erro
+	 * Ação     : Quando é lançado erros na classe de controle essa classe fica responsável de pegar os erros
 	 */
 	
 	@ExceptionHandler(ObjectNotFoundException.class)

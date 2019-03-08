@@ -24,26 +24,28 @@ public class PromocaoResources {
 	@Autowired
 	private PromocaoService service;
 		
-	//ok
+	/*
+	 * @version   : 0.1 
+	 * @author    : Harison Carvalho
+	 * @internal  : busca promoções por id
+	 * @name      : find type GET
+	 * @param     : id Integer
+	 * @return    : obj Promocao -> Id, nome, percentual
+	 */
 	@RequestMapping(value="/{id}",method=RequestMethod.GET)
 	public ResponseEntity<Promocao> find(@PathVariable Integer id) {
-		
 		Promocao obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
 	
-//	//Inserir apenas promoção, ok
-//	@RequestMapping(method=RequestMethod.POST)
-//	public ResponseEntity<?> insert(@Valid @RequestBody PromocaoDTO objDto) {
-//		Promocao obj = service.fromDTO(objDto);
-//		obj = service.insert(obj);
-//		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-//				.path("/{id}").buildAndExpand(obj.getId()).toUri();		  
-//		return ResponseEntity.created(uri).build();
-//		
-//	} 
-	
-	//OK
+	/*
+	 * @version   : 0.1 
+	 * @author    : Harison Carvalho
+	 * @internal  : Insere promoções, uma lista de SKU e uma lista de e-mails vinculados
+	 * @name      : insertProSku - POST 
+	 * @param     : PromocaoDTO -> nome, percentual, List<skuPromocoes>, List<emailPromocoes> 
+	 * @return    : 200 - OK
+	 */
 	@Transactional
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Promocao> insertProSku(@Valid @RequestBody PromocaoDTO objDTO) {
@@ -51,52 +53,83 @@ public class PromocaoResources {
 		return ResponseEntity.ok().build();
 	} 
 	
-	//OK
+	/*
+	 * @version   : 0.1 
+	 * @author    : Harison Carvalho
+	 * @internal  : Atualiza Promoção
+	 * @name      : update type PUT
+	 * @param     : id, PromocaoDTO -> nome, percentual, List<skuPromocoes>, List<emailPromocoes> 
+	 * @return    : 200 - OK
+	 */
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
-	public ResponseEntity<?> update(@Valid @RequestBody PromocaoDTO objDto, @PathVariable Integer id ) {
+	public ResponseEntity<Promocao> update(@Valid @RequestBody PromocaoDTO objDto, @PathVariable Integer id ) {
 		Promocao obj = service.fromDTO(objDto);
 		obj.setId(id);
 		obj = service.update(obj);	  
 		return ResponseEntity.noContent().build();
-		
 	}
+	
+	/*
+	 * @version   : 0.1 
+	 * @author    : Harison Carvalho
+	 * @internal  : Deleta Promoção
+	 * @name      : delete type DELETE
+	 * @param     : id
+	 * @return    : 200 - OK - Por uma regra de negócio, não é permitido fazer o delete de promoção vinculada
+	 */
 	@RequestMapping(value="/{id}",method=RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
-	//OK
+	/*
+	 * @version   : 0.1 
+	 * @author    : Harison Carvalho
+	 * @internal  : Lista todas as promoções, SKU e E-mails
+	 * @name      : findAll type GET
+	 * @param     : Empyt
+	 * @return    : PromocaoDTO -> id, nome, percentual
+	 */
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<PromocaoDTO>> findAll() {
 		
 		List<Promocao> list = service.findAll();
 		List<PromocaoDTO> listDto = list.stream().map(obj -> new PromocaoDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
-		
 	}
 	
-	//Neste caso eu vou listar as promoções com os SKUs, esta ok.. 
+	/*
+	 * @version   : 0.1 
+	 * @author    : Harison Carvalho
+	 * @internal  : Lista apenas as promoções, sem listas  
+	 * @name      : findAllS type GET
+	 * @param     : Empyt
+	 * @return    : 200 - OK
+	 */
 	@RequestMapping(value="/findAll", method=RequestMethod.GET)
-	public ResponseEntity<List<Promocao>> findAll2() {
-		
+	public ResponseEntity<List<Promocao>> findAllS() {
 		List<Promocao> list = service.findAll();
 		return ResponseEntity.ok().body(list);
-		
 	}
 	
-	//OK
+	/*
+	 * @version   : 0.1 
+	 * @author    : Harison Carvalho
+	 * @internal  : Lista todas as promoções com controle paginação e filtros
+	 * @name      : findPage type GET
+	 * @param     : Page,  linesPerPage, orderBy, direction
+	 * @return    : Page de PromocaoDTO -> id, nome, percentual
+	 */
 	@RequestMapping(value="/page", method=RequestMethod.GET)
 	public ResponseEntity<Page<PromocaoDTO>> findPage(
 			@RequestParam(value="Page", defaultValue="0")Integer page, 
 			@RequestParam(value="linesPerPage", defaultValue="24")Integer linesPerPage, 
 			@RequestParam(value="orderBy", defaultValue="nome")String orderBy, 
 			@RequestParam(value="direction", defaultValue="ASC")String direction) {
-		
 		Page<Promocao> list = service.findPage(page,linesPerPage, orderBy, direction);
 		Page<PromocaoDTO> listDto = list.map(obj -> new PromocaoDTO(obj));
 		return ResponseEntity.ok().body(listDto);
-
 	}
 }
 

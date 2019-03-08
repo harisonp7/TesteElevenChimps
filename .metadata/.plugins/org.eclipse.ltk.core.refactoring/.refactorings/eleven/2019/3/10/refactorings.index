@@ -18,3 +18,18 @@
 1551839949278	Rename field 'eMail'
 1551840282364	Copy compilation unit
 1551840364880	Copy compilation unit
+1551925241764	Copy compilation unit
+1551925269893	Delete element
+1551925283725	Copy compilation unit
+1551925381220	Copy compilation unit
+1551925520774	Copy compilation unit
+1551926492913	Copy compilation unit
+1551926813566	Delete element
+1552008747897	Rename type 'Calc'
+1552008805469	Rename type 'CalcResources'
+1552008917148	Delete element
+1552009696247	Rename type 'CalcService'
+1552009907984	Rename local variable 'maiorValor'
+1552009976817	Rename local variable 'list'
+1552010056885	Rename local variable 'percentual'
+1552010118179	Rename local variable 'calc'

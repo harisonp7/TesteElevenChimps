@@ -3,13 +3,10 @@ package com.eleven.chimps.teste.dto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
-
 import org.hibernate.validator.constraints.Length;
-
 import com.eleven.chimps.teste.domain.EmailPromocao;
 import com.eleven.chimps.teste.domain.Promocao;
 import com.eleven.chimps.teste.domain.SkuPromocao;

@@ -1,0 +1,27 @@
+package com.eleven.chimps.teste.repositories;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import com.eleven.chimps.teste.domain.SkuPromocao;
+
+@Repository
+public interface SkuPromocaoRepository extends JpaRepository<SkuPromocao, Integer>{
+
+
+	List<SkuPromocao> findBySku(String sku);
+	
+
+//	@Query("SELECT DISTINCT obj FROM Produto obj INNER JOIN obj.categorias cat WHERE obj.nome LIKE %:nome% AND cat IN :categorias")
+//	Page<Produto> search(@Param("nome") String nome, @Param("categorias") List<Categorias>, Pageable pageRequest);
+	
+//	@Query("SELECT obj FROM SkuPromocao obj INNER JOIN obj.Promocao cat WHERE obj.sku LIKE %:sku% AND cat IN :promocao")
+//	List<SkuPromocao> search(@Param("nome") String nome, @Param("categorias") List<Promocao> promocao);
+	
+	@Query("SELECT obj FROM SkuPromocao obj INNER JOIN obj.Promocao cat WHERE obj.sku LIKE %:sku%")
+	List<SkuPromocao> search(@Param("nome") String nome);
+}

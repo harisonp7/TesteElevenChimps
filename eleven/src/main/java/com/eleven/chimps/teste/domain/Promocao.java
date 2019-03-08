@@ -24,6 +24,7 @@ public class Promocao  implements Serializable {
 	@ManyToMany(mappedBy = "promocoes")
 	private List<SkuPromocao> skuPromocoes = new ArrayList<>();
 	
+	@JsonIgnore
 	@ManyToMany(mappedBy = "promocoes")
 	private List<EmailPromocao> emailPromocoes = new ArrayList<>();
 	

@@ -21,30 +21,58 @@ public class SkuPromocaoResources {
 	@Autowired
 	private SkuPromocaoService serviceSku;
 	
-	//ok
+	/*
+	 * @version   : 0.1 
+	 * @author    : Harison Carvalho
+	 * @internal  : busca promoções por id
+	 * @name      : find type GET
+	 * @param     : id Integer
+	 * @return    : 200 - OK
+	 */
 	@RequestMapping(value="/{id}",method=RequestMethod.GET)
 	public ResponseEntity<SkuPromocao> find(@PathVariable Integer id) {
 		SkuPromocao obj = serviceSku.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
 	
-	//ok
+	/*
+	 * @version   : 0.1 
+	 * @author    : Harison Carvalho
+	 * @internal  : insere SKU 
+	 * @name      : insert type POST
+	 * @param     : id Integer
+	 * @return    : URI - EndPoint com ID do cadastro
+	 */
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<?> insert(@Valid @RequestBody SkuPromocao obj) {
 		obj = serviceSku.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}").buildAndExpand(obj.getId()).toUri();		  
 		return ResponseEntity.created(uri).build();
-		
 	} 
 	
+	/*
+	 * @version   : 0.1 
+	 * @author    : Harison Carvalho
+	 * @internal  : Deleta SKU por id
+	 * @name      : delete type DELETE
+	 * @param     : id Integer
+	 * @return    : 200 - OK
+	 */
 	@RequestMapping(value="/{id}",method=RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		serviceSku.delete(id);
 		return ResponseEntity.noContent().build();
-		
 	}
-	//ok
+	
+	/*
+	 * @version   : 0.1 
+	 * @author    : Harison Carvalho
+	 * @internal  : Lista todos os SKUs cadastrados
+	 * @name      : findAll type GET
+	 * @param     : id Integer
+	 * @return    : obj SKU Promocao -> Id, SKU
+	 */
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<SkuPromocao>> findAll() {
 		List<SkuPromocao> list = serviceSku.findAll();

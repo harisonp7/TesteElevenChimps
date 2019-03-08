@@ -1,7 +1,6 @@
 package com.eleven.chimps.teste.domain;
 
 import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,7 +20,6 @@ public class Produto  implements Serializable {
 	private String tamanho;
 	private double preco;
 	
-
 	public Produto(Integer id, String nome, String sku, String marca, String cor, String tamanho, double preco) {
 		super();
 		this.id = id;
