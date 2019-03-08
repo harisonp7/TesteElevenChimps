@@ -1,11 +1,9 @@
 package com.eleven.chimps.teste.resources;
 
-import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
-
+import javax.transaction.Transactional;
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -15,13 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import com.eleven.chimps.teste.domain.Promocao;
-import com.eleven.chimps.teste.domain.SkuPromocao;
 import com.eleven.chimps.teste.dto.PromocaoDTO;
 import com.eleven.chimps.teste.services.PromocaoService;
-import com.eleven.chimps.teste.services.SkuPromocaoService;
 
 @RestController
 @RequestMapping(value="/promocao")
@@ -29,92 +23,113 @@ public class PromocaoResources {
 	
 	@Autowired
 	private PromocaoService service;
-	
-	@Autowired
-	private SkuPromocaoService serviceSku;
-	
-	//Teste, buscar penas promoção esta ok
+		
+	/*
+	 * @version   : 0.1 
+	 * @author    : Harison Carvalho
+	 * @internal  : busca promoções por id
+	 * @name      : find type GET
+	 * @param     : id Integer
+	 * @return    : obj Promocao -> Id, nome, percentual
+	 */
 	@RequestMapping(value="/{id}",method=RequestMethod.GET)
 	public ResponseEntity<Promocao> find(@PathVariable Integer id) {
-		
 		Promocao obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
-		
 	}
 	
-	//Inserir apenas promoção, ok
+	/*
+	 * @version   : 0.1 
+	 * @author    : Harison Carvalho
+	 * @internal  : Insere promoções, uma lista de SKU e uma lista de e-mails vinculados
+	 * @name      : insertProSku - POST 
+	 * @param     : PromocaoDTO -> nome, percentual, List<skuPromocoes>, List<emailPromocoes> 
+	 * @return    : 200 - OK
+	 */
+	@Transactional
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<?> insert(@Valid @RequestBody PromocaoDTO objDto) {
-		Promocao obj = service.fromDTO(objDto);
-		obj = service.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(obj.getId()).toUri();		  
-		return ResponseEntity.created(uri).build();
-		
+	public ResponseEntity<Promocao> insertProSku(@Valid @RequestBody PromocaoDTO objDTO) {
+		service.insertProSku(objDTO);
+		return ResponseEntity.ok().build();
 	} 
 	
-	//AQUI UM DOS PROBLEMA, INSERIR UMA PROMOÇÃO COM UMA LISTA DE SKUS - ESTOU ENROLLADO AQUI
-	@RequestMapping(value="/proSku", method=RequestMethod.POST)
-	public ResponseEntity<Promocao> insertProSku(@Valid @RequestBody Promocao obj) {
-		
-		for(SkuPromocao item : obj.getSkuPromocoes())
-		{
-			serviceSku.insert(item);
-		}
-		obj = service.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(obj.getId()).toUri();		  
-		return ResponseEntity.created(uri).build();
-		
-	} 
-	
-	//Testei o update de promoção ok
+	/*
+	 * @version   : 0.1 
+	 * @author    : Harison Carvalho
+	 * @internal  : Atualiza Promoção
+	 * @name      : update type PUT
+	 * @param     : id, PromocaoDTO -> nome, percentual, List<skuPromocoes>, List<emailPromocoes> 
+	 * @return    : 200 - OK
+	 */
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
-	public ResponseEntity<?> update(@Valid @RequestBody PromocaoDTO objDto, @PathVariable Integer id ) {
+	public ResponseEntity<Promocao> update(@Valid @RequestBody PromocaoDTO objDto, @PathVariable Integer id ) {
 		Promocao obj = service.fromDTO(objDto);
 		obj.setId(id);
 		obj = service.update(obj);	  
 		return ResponseEntity.noContent().build();
-		
 	}
-	//Delete de Promoção, esta ok
+	
+	/*
+	 * @version   : 0.1 
+	 * @author    : Harison Carvalho
+	 * @internal  : Deleta Promoção
+	 * @name      : delete type DELETE
+	 * @param     : id
+	 * @return    : 200 - OK - Por uma regra de negócio, não é permitido fazer o delete de promoção vinculada
+	 */
 	@RequestMapping(value="/{id}",method=RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
-	//Listando todas as promoções ok
+	/*
+	 * @version   : 0.1 
+	 * @author    : Harison Carvalho
+	 * @internal  : Lista todas as promoções, SKU e E-mails
+	 * @name      : findAll type GET
+	 * @param     : Empyt
+	 * @return    : PromocaoDTO -> id, nome, percentual
+	 */
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<PromocaoDTO>> findAll() {
 		
 		List<Promocao> list = service.findAll();
 		List<PromocaoDTO> listDto = list.stream().map(obj -> new PromocaoDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
-		
 	}
 	
-	//Neste caso eu vou listar as promoções com os SKUs, esta ok.. 
+	/*
+	 * @version   : 0.1 
+	 * @author    : Harison Carvalho
+	 * @internal  : Lista apenas as promoções, sem listas  
+	 * @name      : findAllS type GET
+	 * @param     : Empyt
+	 * @return    : 200 - OK
+	 */
 	@RequestMapping(value="/findAll", method=RequestMethod.GET)
-	public ResponseEntity<List<Promocao>> findAll2() {
-		
+	public ResponseEntity<List<Promocao>> findAllS() {
 		List<Promocao> list = service.findAll();
 		return ResponseEntity.ok().body(list);
-		
 	}
 	
-	//Lista com paginação, esta ok...
+	/*
+	 * @version   : 0.1 
+	 * @author    : Harison Carvalho
+	 * @internal  : Lista todas as promoções com controle paginação e filtros
+	 * @name      : findPage type GET
+	 * @param     : Page,  linesPerPage, orderBy, direction
+	 * @return    : Page de PromocaoDTO -> id, nome, percentual
+	 */
 	@RequestMapping(value="/page", method=RequestMethod.GET)
 	public ResponseEntity<Page<PromocaoDTO>> findPage(
 			@RequestParam(value="Page", defaultValue="0")Integer page, 
 			@RequestParam(value="linesPerPage", defaultValue="24")Integer linesPerPage, 
 			@RequestParam(value="orderBy", defaultValue="nome")String orderBy, 
 			@RequestParam(value="direction", defaultValue="ASC")String direction) {
-		
 		Page<Promocao> list = service.findPage(page,linesPerPage, orderBy, direction);
 		Page<PromocaoDTO> listDto = list.map(obj -> new PromocaoDTO(obj));
 		return ResponseEntity.ok().body(listDto);
-
 	}
 }
 

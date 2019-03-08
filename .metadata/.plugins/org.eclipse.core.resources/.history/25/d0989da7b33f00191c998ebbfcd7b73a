@@ -1,0 +1,23 @@
+package com.eleven.chimps.teste.resources;
+
+import com.eleven.chimps.teste.repositories.ProdutoRepository;
+import com.eleven.chimps.teste.repositories.PromocaoRepository;
+import com.eleven.chimps.teste.repositories.SkuPromocaoRepository;
+import com.eleven.chimps.teste.services.PromocaoService;
+import com.eleven.chimps.teste.services.SkuPromocaoService;
+
+public class PromocaoResourcesData {
+	@Autowired
+	public PromocaoService service;
+	@Autowired
+	public SkuPromocaoService serviceSku;
+	@Autowired
+	public ProdutoRepository produtoRepository;
+	@Autowired
+	public PromocaoRepository promocaoRepository;
+	@Autowired
+	public SkuPromocaoRepository skuPromocaoRepository;
+
+	public PromocaoResourcesData() {
+	}
+}

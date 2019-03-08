@@ -1,0 +1,153 @@
+package com.eleven.chimps.teste.services;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.stereotype.Service;
+
+import com.eleven.chimps.teste.domain.Calc;
+import com.eleven.chimps.teste.domain.EmailPromocao;
+import com.eleven.chimps.teste.domain.Promocao;
+import com.eleven.chimps.teste.domain.SkuPromocao;
+import com.eleven.chimps.teste.dto.CalcDTO;
+import com.eleven.chimps.teste.dto.PromocaoDTO;
+import com.eleven.chimps.teste.repositories.PromocaoRepository;
+import com.eleven.chimps.teste.repositories.SkuPromocaoRepository;
+import com.eleven.chimps.teste.services.exceptions.DataIntegrityException;
+import com.eleven.chimps.teste.services.exceptions.ObjectNotFoundException;
+
+@Service
+public class CalcService {
+	
+	@Autowired
+	private PromocaoRepository repo;
+	
+	@Autowired
+	private SkuPromocaoRepository repoSku;
+	
+	@Autowired
+	private SkuPromocaoService serviceSku;
+	
+	@Autowired
+	private EmailPromocaoService serviceEmail;
+	
+	
+	public void calSkuPro(CalcDTO objDTO) {
+		List<SkuPromocao> list = repoSku.findBySku(objDTO.getSku());
+		System.out.println(list.get(0).getId() + "id");
+		System.out.println(list.get(0).getSku() + "sku");
+		System.out.println(list.get(0).getPromocoes().get(0).getNome() + "nome1");
+		System.out.println(list.get(0).getPromocoes().get(0).getPercentual() + "percentual");
+		
+		List<Integer> percentual = new ArrayList<>();
+		Integer maiorValor = 0;
+		Double valorOriginal = Double.parseDouble(objDTO.getPrOrig().replace(",", "."));
+		
+		for (int i = 0; i < list.size(); i++) {
+			percentual.add(list.get(i).getPromocoes().get(i).getPercentual().intValue());
+		 }
+		for(Integer valor : percentual) {  
+		      if(valor > maiorValor) {
+		            maiorValor = valor;
+		      }
+		}
+		
+		 Calc calc = new Calc();
+		 calc.setSku(objDTO.getSku());
+		 calc.setPrOriginal(valorOriginal);
+		 calc.setPrPromocional(valorOriginal - (valorOriginal * (maiorValor / 100)));
+		
+		//Integer maiorValor = Math.max(0, percentual);
+//		var meuArray= [0,12,13,2,1273,28,1];
+//		var maior = Math.max.apply(null, meuArray );
+		
+//		List<SkuPromocao> listaFull = repoSku.search(objDTO.getSku());
+//		System.out.println(listaFull.get(0).getSku() + "sku2");
+//		System.out.println(listaFull.get(0).getPromocoes().get(0).getNome() + "nome2");
+		
+		//List<Promocao> listPro = repo.findAll().stream().map(obj -> x.);
+		
+		//List<PromocaoDTO> listDto = list.stream().map(obj -> new PromocaoDTO(obj)).collect(Collectors.toList());
+		//System.out.println(listPro.get(0).getSkuPromocoes().get(0).getSku() + "skuPromocoes");
+	}
+	
+	
+	
+	public Promocao find(Integer id) {
+		Optional<Promocao> obj = repo.findById(id);
+		
+		return obj.orElseThrow(() -> new ObjectNotFoundException(
+				String.format("Promoção não encontrada! Id: %1$s Tipo: %2$s", id, Promocao.class.getName())
+			));
+	}
+	
+	public List<Promocao> findAll() {
+		return repo.findAll();
+	}
+	
+	
+	public Page<Promocao> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction),orderBy);
+		return repo.findAll(pageRequest);
+	}
+
+	@Transactional
+	public void insertProSku(PromocaoDTO obj) {
+		
+		List<SkuPromocao> listSkuPromocao = new ArrayList<>();
+		List<EmailPromocao> listEmailPromocao = new ArrayList<>();
+		
+		Promocao objProm = new Promocao(null,obj.getNome(),obj.getPercentual());
+		
+		for(SkuPromocao item : obj.getSkuPromocoes())
+		{
+			SkuPromocao objSku = new SkuPromocao(null, item.getSku());
+			listSkuPromocao.add(objSku);
+			objProm.getSkuPromocoes().addAll(Arrays.asList(objSku));
+		}
+		for(EmailPromocao item : obj.getEmailPromocoes())
+		{
+			EmailPromocao objEmail = new EmailPromocao(null, item.getEmail());
+			listEmailPromocao.add(objEmail);
+			objProm.getEmailPromocoes().addAll(Arrays.asList(objEmail));
+		}
+		repo.saveAll(Arrays.asList(objProm));
+		serviceSku.InsertSku(listSkuPromocao, objProm);
+		serviceEmail.InsertEmail(listEmailPromocao, objProm);
+	}	
+	
+	public Promocao update(Promocao obj) {
+		Promocao newObj = this.find(obj.getId());
+		updateData(newObj, obj);
+		return repo.save(newObj);
+	}
+	
+	public void delete(Integer id) {
+		this.find(id);
+		try {
+			repo.deleteById(id);
+		}
+		catch(DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Não é possível excluir promoções com vínculos com SKUs, somente atualizar!");
+		}
+	}
+	
+	public Promocao fromDTO(PromocaoDTO objDto)
+	{
+		return new Promocao(objDto.getId(), objDto.getNome(), objDto.getPercentual());
+	}
+	
+	private void updateData(Promocao newObj, Promocao obj) {
+		newObj.setNome(obj.getNome());
+		newObj.setPercentual(obj.getPercentual());
+	}
+}

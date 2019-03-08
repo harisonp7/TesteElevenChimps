@@ -1,6 +1,7 @@
 
 package com.eleven.chimps.teste.services;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import com.eleven.chimps.teste.domain.Promocao;
 import com.eleven.chimps.teste.domain.SkuPromocao;
 import com.eleven.chimps.teste.repositories.SkuPromocaoRepository;
 import com.eleven.chimps.teste.services.exceptions.DataIntegrityException;
@@ -33,6 +35,14 @@ public class SkuPromocaoService {
 	public SkuPromocao insert(SkuPromocao skuProm) {
 		SkuPromocao obj = repo.save(skuProm);
 		return obj;
+	}
+	
+	public void InsertSku(List<SkuPromocao> listSkuPromocao, Promocao objProm) {
+		for(SkuPromocao item : listSkuPromocao)
+		{
+			item.getPromocoes().addAll(Arrays.asList(objProm));
+			repo.saveAll(Arrays.asList(item));
+		}
 	}
 	
 	public void insertList(List<SkuPromocao> skuProm) {

@@ -5,3 +5,31 @@
 1551716094463	Delete element
 1551728632402	Rename field 'SkuPromocoes'
 1551732357965	Copy compilation unit
+1551836172161	Rename field 'promocaoRepository'
+1551836190291	Rename field 'skuPromocaoRepository'
+1551836215237	Rename field 'promRepository'
+1551836223317	Rename field 'promRep'
+1551836231169	Rename field 'skuPromRepository'
+1551836304382	Extract method 'InsertSku'
+1551837579572	Extract Class...
+1551837645558	Delete element
+1551839817891	Copy compilation unit
+1551839896829	Rename field 'sku'
+1551839949278	Rename field 'eMail'
+1551840282364	Copy compilation unit
+1551840364880	Copy compilation unit
+1551925241764	Copy compilation unit
+1551925269893	Delete element
+1551925283725	Copy compilation unit
+1551925381220	Copy compilation unit
+1551925520774	Copy compilation unit
+1551926492913	Copy compilation unit
+1551926813566	Delete element
+1552008747897	Rename type 'Calc'
+1552008805469	Rename type 'CalcResources'
+1552008917148	Delete element
+1552009696247	Rename type 'CalcService'
+1552009907984	Rename local variable 'maiorValor'
+1552009976817	Rename local variable 'list'
+1552010056885	Rename local variable 'percentual'
+1552010118179	Rename local variable 'calc'

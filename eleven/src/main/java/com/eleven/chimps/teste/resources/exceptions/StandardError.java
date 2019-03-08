@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class StandardError implements Serializable{
 	/*
-	 * Campos de retorno das mensagens de erro
+	 * Campos para retorno das mensagens de erro
 	 */
 	
 	private static final long serialVersionUID = 1L;

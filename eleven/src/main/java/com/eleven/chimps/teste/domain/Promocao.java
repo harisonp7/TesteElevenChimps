@@ -3,13 +3,11 @@ package com.eleven.chimps.teste.domain;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -25,6 +23,10 @@ public class Promocao  implements Serializable {
 	@JsonIgnore
 	@ManyToMany(mappedBy = "promocoes")
 	private List<SkuPromocao> skuPromocoes = new ArrayList<>();
+	
+	@JsonIgnore
+	@ManyToMany(mappedBy = "promocoes")
+	private List<EmailPromocao> emailPromocoes = new ArrayList<>();
 	
 	public Promocao(Integer id, String nome, Integer percentual) {
 		super();
@@ -58,6 +60,14 @@ public class Promocao  implements Serializable {
 
 	public void setSkuPromocoes(List<SkuPromocao> skuPromocoes) {
 		this.skuPromocoes = skuPromocoes;
+	}
+	
+	public List<EmailPromocao> getEmailPromocoes() {
+		return emailPromocoes;
+	}
+
+	public void setEmailPromocoes(List<EmailPromocao> emailPromocoes) {
+		this.emailPromocoes = emailPromocoes;
 	}
 	
 	public Integer getPercentual() {
